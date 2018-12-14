@@ -1,8 +1,8 @@
 # Modelling Code Robustness
 
-## Ayrron Dale-Evans Honours Project 2018/19
+## Masters Project 2018/19
 
-Ayrron, please put a brief description of the project here.
+please put a brief description of the project here.
 make a ocde robustenss model based on goodarzi et al 2004.
 To run Rob's "main.py" script:
 
@@ -19,9 +19,23 @@ therfore need to make a function that runs through codon comparisons and sums th
 not nesessacary for function to returh gilis values 
 after executeing the N function then run gilis compariosn mutiplying the gilis values by th nesacary value over N
 
-Ayrrons five step process to code robutness tests:
+ five step plan to code robutness tests:
 . define the gilis matrix
 .define a function to get N and implement p(c|c')
 . implement the effect of amino acid frequency and number of synomyous codons
 . introduce stop codon mistranslation effect
 . introduce f(c) (hopefully)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
