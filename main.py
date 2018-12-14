@@ -36,6 +36,46 @@ def compare_list_elements(df, sgc):
                 print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
     return sum
 
+
+
+purines=['A','G']
+pyrimidines=['C','U']
+
+
+
+def acquireN(sgc):
+    N=0
+    for a,b in itertools.combinations(sgc.keys(), 2):
+        if('Ter' not in [sgc[a],sgc[b]]) and (a != b):
+             if a[0:1] == b[0:1]:
+                    if a[1:2] == b[1:2]:
+                        if a[2:3] != b[2:3]:
+                            N += 1
+                    elif a[2:3] == b[2:3]:
+                        if (a[1:2] in purines) and (b[1:2] in purines):
+                            N += 0.5
+                        if (a[1:2] in pyrimidines) and (b[1:2] in pyrimidines):
+                            N += 0.5
+                        else:
+                            N += 0.1
+             elif a[1:2] == b[1:2]:
+                    if a[2:3] == b[2:3]:
+                        if (a[0:1] in purines) and (b[0:1] in purines):
+                            N += 1
+                        if (a[0:1] in pyrimidines) and (b[0:1] in pyrimidines):
+                            N += 1
+                        else:
+                            N += 0.5
+    return N
+    print(N)                   
+    
+# is the loop correct? i think so but N seems very large.
+
+acquireN(SGC)
+# is this right? it would make N pretty big. or, since its sum p(c|c')= 1 for any c-
+#- does it need divided by 64?
+
+#%%
 # order to run function
 if __name__ == "__main__":
     gilis_df = pd.read_excel('gilis.xlsx')
