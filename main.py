@@ -1,5 +1,13 @@
+import pandas as import pd
 
-# may need to change codon and amino acid around to work with .keys 
+# read 'gilis.xlsx' to dataframe
+gilis_df = pd.read_excel('gilis.xlsx')
+
+
+
+
+
+# may need to change codon and amino acid around to work with .keys
 # but not sure if haveing mutiple keys of the same name is allowed, probably not
 
 SGC={"UUU":"Phe", "UUC":"Phe", "UUA":"Leu", "UUG":"Leu",
@@ -41,7 +49,7 @@ p=1
 for key1 in SGC.keys():
     for key2 in SGC.keys():
         if SGC.keys(key1) != SGC.keys(key2):
-            if SGC[key1] != 'Ter': 
+            if SGC[key1] != 'Ter':
                 if key1[0:1] == key2[0:1]:
                     if key1[1:2] == key2[1:2]:
                         if not key1[2:3] == key2[2:3]:
@@ -52,16 +60,16 @@ for key1 in SGC.keys():
                         sumError += (p*gilis)
                 elif key1[1:2] == key2[1:2]:
                     if key1[2:3] == key2[2:3]:
-                       (gilis) # SGC[key1] SGC[key2] 
+                       (gilis) # SGC[key1] SGC[key2]
                        sumError += (p*gilis)
 
 # do gilis spreadsheet
 # make github repo
 # send rob link
-                        
+
 # how to compare base make up of codons? for value in key? (makes a nested loop)
 # or make a function that compares codon base makeup so only one line in loop?
-# def functions U/A/C/G count(Key): key.count ('U/A/C/G') ? 
+# def functions U/A/C/G count(Key): key.count ('U/A/C/G') ?
 #insert  functions in loop then compare each of two keys, if differ by no more than one-
 #-base then in theory codons only differ by one base, so the key value should be compared-
 #-however its unclear how this method could distinguish transistions and transversions
@@ -99,17 +107,17 @@ Gilis=1
 #- could be copy pasted through the loop
 # excel Gilis as a square (3 letter code)
 
-    
-#if I make an array how do I then say ‘ if codon 1 gives AA 1 and codon 2 - 
-# -gives AA 2 then go to array/ matrix to obtain the correct value of the change ?   
-    
+
+#if I make an array how do I then say ‘ if codon 1 gives AA 1 and codon 2 -
+# -gives AA 2 then go to array/ matrix to obtain the correct value of the change ?
+
 SumError=()
 # insert every error cost (after every full pass of the loop)into SumError
 # at end of code print(SumError) to get error cost
-# print(SumError/64) to compare to novozhilov? 
+# print(SumError/64) to compare to novozhilov?
 # end every pass of a legtimate codon comparison  with SumError += (p*matrixvalue)
 #for pass of loop where codons differing by more then one base SumError += 0
-    
+
 p=1
 #in this case p is equa to p(c|c')
 # once the the base position in two codons with a single differing base is found-
@@ -119,20 +127,4 @@ p=1
 
 f=1
 #not neseerary for novozhilov result comparison.
-# for goodarzi result comparison sumError +=(((p(a(c)/n(a(c))*f)*(p*matrixvalue))   
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+# for goodarzi result comparison sumError +=(((p(a(c)/n(a(c))*f)*(p*matrixvalue))
