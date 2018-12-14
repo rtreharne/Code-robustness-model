@@ -28,7 +28,7 @@ def compare_list_elements(df, sgc):
     sum = 0
     count = 0
     for a, b in itertools.combinations(sgc.keys(), 2):
-        if ('Ter' not in [sgc[a], sgc[b]]) and (sgc[a] != sgc[b]):
+        if ('Ter' not in [sgc[a], sgc[b]]) and (a != b):
             count += 1
             if compare_codon(a, b):
                 gilis_value = get_gilis_val(df, sgc[a], sgc[b])
@@ -36,9 +36,27 @@ def compare_list_elements(df, sgc):
                 print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
     return sum
 
-
+# order to run function
 if __name__ == "__main__":
     gilis_df = pd.read_excel('gilis.xlsx')
     sum = compare_list_elements(gilis_df, SGC)
-    print(sum)
+    print('error cost =' + sum)
+
+
+# sum p(c|c')= N intially make a function that gets sum
+# then rerun but * gilis values by p where p is (correct numerator)/N
+#N is the sum of p(c|c') numerators ( 1 for a third base chnage 0.5 for 2nd base transition etc)
+#therfore need to make a function that runs through codon comparisons 
+# then sums the p(c|c') values 
+#not nesessacary for function to returh gilis values 
+#after executeing the N function 
+#then run gilis compariosn mutiplying the gilis values by th nesacary value over N
+
+
+
+
+
+
+
+
 
