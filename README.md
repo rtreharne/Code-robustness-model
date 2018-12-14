@@ -7,6 +7,8 @@ Ayrron, please put a brief description of the project here.
 To run Rob's "main.py" script:
 
 ```bash
-$ python3 main.py
+$ pipenv install
+$ pipenv shell
+$ python main.py
 
 ```
