@@ -14,7 +14,7 @@ def get_gilis_val(df, column_label, row_label):
 
 def compare_codon(a, b):
     '''
-    Compare two codons and return True if they only differ by on base
+    Compare two codons and return True if they only differ by one base
     :param a: codon (string) e.g. 'UUU'
     :param b: codon (string) e.g. 'UUU'
     :return: boolean
@@ -23,6 +23,19 @@ def compare_codon(a, b):
         return True
     else:
         return False
+
+# so, itertools doesn't compare the same codons twice
+# if you run the file you'll see the first valid comparison is UUU and UUC
+# but, once UUU is exhausted and itertools moves to UUC, UUC is not then compared to UUU
+# in theory this is fine for overall cot error, as all end values will be half that of-
+#-what it would be if the same codons were compared again.
+# this is becuase (currently) the gilis value would be the same for the secound comparison
+# But, how does this affect N?
+# since N is a normalisation for any c, 
+# is N correct if the duplicate comparisons aren't made?
+# if so, then N is even larger ( twice as large) then it is currently
+# (this is notcounting anything else that needs to happen to N of course)
+# so should I ue itertools.combinations_with_replacements ?
 
 def compare_list_elements(df, sgc):
     sum = 0
@@ -41,6 +54,7 @@ def compare_list_elements(df, sgc):
 purines=['A','G']
 pyrimidines=['C','U']
 
+# need to run whole file or N  won't work
 
 
 def acquireN(sgc):
@@ -53,11 +67,11 @@ def acquireN(sgc):
                             N += 1
                     elif a[2:3] == b[2:3]:
                         if (a[1:2] in purines) and (b[1:2] in purines):
-                            N += 0.5
+                            N += 0.5 #purine to purine transition
                         if (a[1:2] in pyrimidines) and (b[1:2] in pyrimidines):
-                            N += 0.5
+                            N += 0.5 # pyrimidine to pyrimidine transition
                         else:
-                            N += 0.1
+                            N += 0.1 # one purine, one pyrimidine = transversion
              elif a[1:2] == b[1:2]:
                     if a[2:3] == b[2:3]:
                         if (a[0:1] in purines) and (b[0:1] in purines):
@@ -72,21 +86,22 @@ def acquireN(sgc):
 # is the loop correct? i think so but N seems very large.
 
 acquireN(SGC)
-# is this right? it would make N pretty big. or, since its sum p(c|c')= 1 for any c-
-#- does it need divided by 64?
+# is this right? it would make N pretty big. or, since its sum p(c|c')= 1 for any c -
+#- does it need divided by 64,61(without stop) or 9, because each codon would only give-
+# a p(c|c') value that wasn't Zero 9 times (each single base mutation)
 
 #%%
 # order to run function
 if __name__ == "__main__":
     gilis_df = pd.read_excel('gilis.xlsx')
     sum = compare_list_elements(gilis_df, SGC)
-    print('error cost =' + sum)
+    print(sum)
 
 
 # sum p(c|c')= N intially make a function that gets sum
 # then rerun but * gilis values by p where p is (correct numerator)/N
-#N is the sum of p(c|c') numerators ( 1 for a third base chnage 0.5 for 2nd base transition etc)
-#therfore need to make a function that runs through codon comparisons 
+#N is the sum of p(c|c') numerators ( e.g 1 for a third base change)
+#therefore need to make a function that runs through codon comparisons 
 # then sums the p(c|c') values 
 #not nesessacary for function to returh gilis values 
 #after executeing the N function 
