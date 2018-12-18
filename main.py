@@ -36,7 +36,13 @@ def compare_codon(a, b):
 # if so, then N is even larger ( twice as large) then it is currently
 # (this is notcounting anything else that needs to happen to N of course)
 # so should I ue itertools.combinations_with_replacements ?
-
+# actually i beive it will need to be, as once the amino acid frequency-
+#- and the amount of synomounous codon d c is included the overall error cost-
+# will be different, e.g. between UUA and UUU, currently only compared once-
+# however when compared twice in the complete equation the UUA and UUU-
+#- will have different frequency and synomous codn values since UUA codes Leu-
+#- where as UUU encodes Phe
+        
 def compare_list_elements(df, sgc):
     sum = 0
     count = 0
