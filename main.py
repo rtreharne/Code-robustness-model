@@ -24,6 +24,13 @@ def compare_codon(a, b):
     else:
         return False
 
+#%%
+SynCodonData=pd.read_excel("SynCodonsSGC.xlsx")
+
+def get_SynCodons(df, row_label, column_label):
+    df=SynCodonData
+    return df[row_label][column_label]
+
 # so, itertools doesn't compare the same codons twice
 # if you run the file you'll see the first valid comparison is UUU and UUC
 # but, once UUU is exhausted and itertools moves to UUC, UUC is not then compared to UUU
@@ -42,7 +49,67 @@ def compare_codon(a, b):
 # however when compared twice in the complete equation the UUA and UUU-
 #- will have different frequency and synomous codn values since UUA codes Leu-
 #- where as UUU encodes Phe
-        
+    
+
+
+
+#%%
+
+purines=['A','G']
+pyrimidines=['C','U']
+
+def compare_list_elements(df, sgc):
+    sum = 0
+    count = 0
+    p=0
+    for a, b in itertools.permutations(sgc.keys(), 2):
+        if ('Ter' not in [sgc[a], sgc[b]]) and (a != b):
+            count += 1
+            if compare_codon(a, b):
+                if a[0:1] != b[0:1]:
+                    if (a[0:1] in purines) and (b[0:1] in purines):
+                        p=(1/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    elif (a[0:1] in pyrimidines) and (b[0:1] in pyrimidines):
+                        p=(1/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    else:
+                        p=(0.5/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                elif a[1:2] != b[1:2]:
+                    if (a[1:2] in purines) and (b[1:2] in purines):
+                        p=(0.5/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    elif (a[1:2] in pyrimidines) and (b[1:2] in pyrimidines):
+                        p=(0.5/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    else:
+                        p=(0.1/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                elif a[2:3] != b[2:3]:
+                    p=(1/5.7)
+                    gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                    sum +=(p*gilis_value)
+                    print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+    return sum
+
+
+
+
+
+'''  
 def compare_list_elements(df, sgc):
     sum = 0
     count = 0
@@ -54,15 +121,17 @@ def compare_list_elements(df, sgc):
                 sum += gilis_value
                 print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
     return sum
+'''
 
-
-
+'''
 purines=['A','G']
 pyrimidines=['C','U']
-
+'''
 # need to run whole file or N  won't work
+# N=5.7
+# N may simpley be 5.7, wait for confrim, but loop still useable for p definition.
 
-
+'''
 def acquireN(sgc):
     N=0
     for a,b in itertools.combinations(sgc.keys(), 2):
@@ -88,10 +157,14 @@ def acquireN(sgc):
                             N += 0.5
     return N
     print(N)                   
-    
-# is the loop correct? i think so but N seems very large.
+ '''   
 
+# is the loop correct? i think so but N seems very large.
+ 
+'''
 acquireN(SGC)
+'''
+
 # is this right? it would make N pretty big. or, since its sum p(c|c')= 1 for any c -
 #- does it need divided by 64,61(without stop) or 9, because each codon would only give-
 # a p(c|c') value that wasn't Zero 9 times (each single base mutation)
