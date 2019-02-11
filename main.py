@@ -2,6 +2,42 @@ import pandas as pd
 import itertools
 from SGC import *
 
+
+Freqdf=pd.read_excel('AAfreqs.xlsx')
+
+print(Freqdf)
+
+Freqdf=Freqdf.set_index('amino')
+
+Freqlookup=Freqdf.to_dict()
+
+print(Freqlookup)
+
+FreqVal=Freqlookup['p(a)'] #use FreqVal to get the frequecy of aa within p(a) key
+print(FreqVal['Trp']) # returns 0.0109 correct value
+
+Syndf=pd.read_excel('SynCodonsSGC.xlsx')
+print(Syndf)
+Syndf=Syndf.set_index('amino')
+Synlookup=Syndf.to_dict()
+print(Synlookup)
+
+SynVal=Synlookup['n(a(c))'] # gets syn codons number from within n(a(c)) key
+print(SynVal['Glu']) # returns 2 correct value
+
+
+
+#%%
+'''
+for i in sgc.keys():
+    print(SynVal[sgc[i]])
+# comes back as sgc is not deifned, doing something obvious wrong?
+'''
+
+
+#%%
+
+
 def get_gilis_val(df, column_label, row_label):
     '''
     This function returns a Gilis value
@@ -25,12 +61,15 @@ def compare_codon(a, b):
         return False
 
 #%%
+        '''
 SynCodonData=pd.read_excel("SynCodonsSGC.xlsx")
 
 def get_SynCodons(df, row_label, column_label):
     df=SynCodonData
     return df[row_label][column_label]
 
+get_SynCodons(df,sg)
+'''
 # so, itertools doesn't compare the same codons twice
 # if you run the file you'll see the first valid comparison is UUU and UUC
 # but, once UUU is exhausted and itertools moves to UUC, UUC is not then compared to UUU
@@ -107,7 +146,58 @@ def compare_list_elements(df, sgc):
 
 
 
-
+# prototype of error cost function with amino acid frequencies-
+#- and synonomous codons incorporated see 13 lines down
+'''
+def compare_list_elements(df, sgc):
+    sum = 0
+    count = 0
+    p=0
+    for a, b in itertools.permutations(sgc.keys(), 2):
+        if ('Ter' not in [sgc[a], sgc[b]]) and (a != b):
+            count += 1
+            if compare_codon(a, b):
+                if a[0:1] != b[0:1]:
+                    if (a[0:1] in purines) and (b[0:1] in purines):
+                        p=(1/5.7)
+                        aminofreq=FreqVal[sgc[a]]
+                        synnum=SynVal[sgc[a]]
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum += (aminofrq/synnum) * (p*gilis_value) # new sum line
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    elif (a[0:1] in pyrimidines) and (b[0:1] in pyrimidines):
+                        p=(1/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    else:
+                        p=(0.5/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                elif a[1:2] != b[1:2]:
+                    if (a[1:2] in purines) and (b[1:2] in purines):
+                        p=(0.5/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    elif (a[1:2] in pyrimidines) and (b[1:2] in pyrimidines):
+                        p=(0.5/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                    else:
+                        p=(0.1/5.7)
+                        gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                        sum +=(p*gilis_value)
+                        print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+                elif a[2:3] != b[2:3]:
+                    p=(1/5.7)
+                    gilis_value = get_gilis_val(df, sgc[a], sgc[b])
+                    sum +=(p*gilis_value)
+                    print(count, [a, b], [sgc[a], sgc[b]], gilis_value, sum)
+    return sum
+'''
 
 '''  
 def compare_list_elements(df, sgc):
